@@ -2,9 +2,6 @@
 import T from 'typr'
 import assert from 'assert'
 
-// import runtime from '../../../common/base/runtime'
-// import Component from '../../../common/rendering/base/component'
-
 import Devapt from 'devapt'
 
 const Component = Devapt.Component
@@ -18,23 +15,22 @@ export default class Menubar extends Component
 {
 	constructor(arg_name, arg_settings)
 	{
-		arg_settings = T.isObject(arg_settings) ? arg_settings : {}
-		
-		arg_settings.styles = []
-		
-		arg_settings.headers = ['<meta keywords="menubar" />']
-		
+		// UPDATE SETTINGS
+		arg_settings = Component.normalize_settings(arg_settings)
+		arg_settings.scripts_urls = arg_settings.scripts_urls.concat(
+			[
+				'plugins/Foundation-6/jquery.min.js',
+				'plugins/Foundation-6/foundation.js'
+			]
+		)
+		arg_settings.styles_urls = arg_settings.styles_urls.concat(
+			['plugins/Foundation-6/foundation.min.css']
+		)
+		arg_settings.scripts.push('$(document).ready( function(){ var menubar = $("#' + arg_name + '");/* menubar.foundation();*/ menubar.show() } )') 
 		
 		super(arg_name, arg_settings)
 		
-		const scripts_urls = [
-			'plugins/Foundation-6/jquery.min.js',
-			'plugins/Foundation-6/foundation.js']
-		this.add_scripts_urls(scripts_urls)
-		
-		const styles_urls = [
-			'plugins/Foundation-6/foundation.min.css']
-		this.add_styles_urls(styles_urls)
+		this.$type = 'Menubar'
 	}
 	
 	
@@ -42,16 +38,14 @@ export default class Menubar extends Component
 	get_initial_state()
 	{
 		return {
-			headers: [],
 			items: [],
-            
-			label:'no label'
+			label: 'Home'
 		}
 	}
 	
 	
 	// RENDERING
-	render()
+	render_main()
 	{
 		// console.log('Foundation6:Menubar.render:state',this.state)
 		
@@ -75,7 +69,7 @@ export default class Menubar extends Component
 				for(let j = 0 ; j < row.items.length ; j++)
 				{
 					const sub_row = row.items[j]
-					const url = runtime.context.get_url_with_credentials(state.app_url + sub_row.url, state.request)
+					const url = runtime.context.get_url_with_credentials(state.app_url + sub_row.url, this.renderer.request)
 					const sub_html_row =  '<a href="/' + url + '">' + sub_row.label + '</a>\n'
 					html_row += '<li role="menuitem">\n' + sub_html_row + '</li>\n'
 				}
@@ -85,7 +79,7 @@ export default class Menubar extends Component
 			}
 			else
 			{
-				const url = runtime.context.get_url_with_credentials(state.app_url + row.url, state.request)
+				const url = runtime.context.get_url_with_credentials(state.app_url + row.url, this.request)
 				const html_row = '<a href="/' + url + '">' + row.label + '</a>\n'
 				html_left_menus += '<li>\n' + html_row + '</li>\n'
 			}
@@ -94,7 +88,7 @@ export default class Menubar extends Component
 		
 		// BUILD HTML TABLE
 		let html = ''
-		html += '<div class="" id="' + this.get_dom_id() + '">'
+		html += '<div class="" id="' + this.get_dom_id() + '" style="display:none;">'
 		html += '<nav class="top-bar">\n'
 		
 		html += '	<div class="top-bar-title">\n'

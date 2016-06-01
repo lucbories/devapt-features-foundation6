@@ -54,7 +54,6 @@ gulp.task('watch_all_js',
 				console.log('File ' + event.path + ' was ' + event.type + ', running tasks...')
 			}
 		)
-		livereload.listen()
 	}
 )
 

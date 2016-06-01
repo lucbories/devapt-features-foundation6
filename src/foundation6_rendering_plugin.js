@@ -7,14 +7,15 @@ import Devapt from 'devapt'
 
 const RenderingPlugin = Devapt.RenderingPlugin
 
-// import Button from './button'
+import Button from './plugin/button'
 import Tree from './plugin/tree'
-// import HBox from './hbox'
-// import VBox from './vbox'
-// import List from './list'
+// import HBox from './plugin/hbox'
+// import VBox from './plugin/vbox'
+// import List from './plugin/list'
 import Table from './plugin/table'
-// import Page from './page'
-// import Script from './script'
+import Tabs from './plugin/tabs'
+// import Page from './plugin/page'
+// import Script from './plugin/script'
 import Menubar from './plugin/menubar'
 
 
@@ -44,6 +45,19 @@ export default class Foundation6Plugin extends RenderingPlugin
 		this.add_public_asset('js', '/' + plugin_name + '/what-input.min.js', path.join(what_dir, 'what-input.min.js') )
 	}
 	
+    
+	/**
+     * Get a feature class.
+     * @param {string} arg_class_name - feature class name.
+     * @returns {object} feature class.
+     */
+	get_feature_class(arg_class_name)
+	{
+		assert( T.isString(arg_class_name), context + ':get_class:bad class string')
+		
+		return Foundation6Plugin.get_class(arg_class_name)
+	}
+	
 	
 	create(arg_class_name, arg_name, arg_settings, arg_state)
 	{
@@ -51,12 +65,13 @@ export default class Foundation6Plugin extends RenderingPlugin
 		
 		switch(arg_class_name)
 		{
-			// case 'Button': return new Button(arg_name, arg_settings, arg_state)
+			case 'Button': return new Button(arg_name, arg_settings, arg_state)
 			case 'Tree':   return new Tree(arg_name, arg_settings, arg_state)
 			// case 'HBox':   return new HBox(arg_name, arg_settings, arg_state)
 			// case 'VBox':   return new VBox(arg_name, arg_settings, arg_state)
 			// case 'List':   return new List(arg_name, arg_settings, arg_state)
 			case 'Table':  return new Table(arg_name, arg_settings, arg_state)
+			case 'Tabs':  return new Tabs(arg_name, arg_settings, arg_state)
 			// case 'Page':   return new Page(arg_name, arg_settings, arg_state)
 			// case 'Script': return new Script(arg_name, arg_settings, arg_state)
 			case 'Menubar': return new Menubar(arg_name, arg_settings, arg_state)
@@ -78,8 +93,10 @@ export default class Foundation6Plugin extends RenderingPlugin
 		
 		switch(arg_class_name)
 		{
+			case 'Button':   return Button
 			case 'Tree':   return Tree
 			case 'Table':  return Table
+			case 'Tabs':  return Tabs
 			case 'Menubar': return Menubar
 		}
 		
@@ -92,12 +109,13 @@ export default class Foundation6Plugin extends RenderingPlugin
 	{
 		switch(arg_class_name)
 		{
-			// case 'Button':
+			case 'Button':
 			case 'Tree':
 			// case 'HBox':
 			// case 'VBox':
 			// case 'List':
 			case 'Table':
+			case 'Tabs':
 			// case 'Page':
 			// case 'Script':
 			case 'Menubar':
