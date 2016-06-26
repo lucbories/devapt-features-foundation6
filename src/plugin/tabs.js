@@ -105,25 +105,47 @@ export default class Tabs extends DefaultTabs
 		return `\n<div ${html_id}>\n${html_titles}\n${html_contents}\n</div>\n`
 	}
 	
-	render_tab_content(arg_tab_cfg)
+	
+	
+	/**
+	 * 
+	 */
+	/*render_tab_content(arg_tab_cfg)
 	{
 		assert( T.isObject(arg_tab_cfg), context + ':render_tab_content:bad tab cfg object')
 		
+		// HTML CONTENT
 		if ( T.isString(arg_tab_cfg.content_html) )
 		{
 			return arg_tab_cfg.content_html
 		}
 		
+		// VIEW
 		if ( T.isString(arg_tab_cfg.content_view) )
 		{
-			const view = this.get_child(arg_tab_cfg.content_view)
+			let view = undefined
+			
+			// GET AN EXISTING CHILD
+			if ( this.has_child(arg_tab_cfg.content_view) )
+			{
+				view = this.get_child(arg_tab_cfg.content_view)
+			}
+			
+			// GET OR CREATE A VIEW
+			else
+			{
+				view = this.get_component(arg_tab_cfg.content_view)
+				this.add_child(view)
+			}
+			
 			if ( ! T.isObject(view) )
 			{
 				return ''
 			}
+			
 			return view.render()
 		}
 		
 		return ''
-	}
+	}*/
 }

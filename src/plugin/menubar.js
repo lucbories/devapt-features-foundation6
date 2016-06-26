@@ -69,7 +69,7 @@ export default class Menubar extends Component
 				for(let j = 0 ; j < row.items.length ; j++)
 				{
 					const sub_row = row.items[j]
-					const url = runtime.context.get_url_with_credentials(state.app_url + sub_row.url, this.renderer.request)
+					const url = runtime.context.get_url_with_credentials(state.app_url + sub_row.url, this.request)
 					const sub_html_row =  '<a href="/' + url + '">' + sub_row.label + '</a>\n'
 					html_row += '<li role="menuitem">\n' + sub_html_row + '</li>\n'
 				}
