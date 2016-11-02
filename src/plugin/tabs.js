@@ -47,6 +47,7 @@ export default class Tabs extends DefaultTabs
 	
 	/**
 	 * Render component main rendering.
+	 * 
 	 * @returns {string} rendered html string
 	 */
 	render_main()
@@ -88,7 +89,7 @@ export default class Tabs extends DefaultTabs
 					const tab_label_value = tab_cfg.label ? tab_cfg.label : '- ' + index + ' -'
 					html_tabs_titles += `<li ${tab_label_id_str} class="tabs-title ${tab_is_active}"> <a href="#${tab_content_id}" ${tab_is_active_aria}>${tab_label_value}</a></li>\n`
 					
-					const tab_content_value = this.render_tab_content(tab_cfg)
+					const tab_content_value = this.render_item_content(tab_cfg)
 					const tab_content_id_str = 'id="' + tab_content_id + '"'
 					html_tabs_contents += `\n<div ${tab_content_id_str} class="tabs-panel ${tab_is_active}">\n ${tab_content_value} \n</div>\n`
 				}
@@ -104,48 +105,4 @@ export default class Tabs extends DefaultTabs
 		}
 		return `\n<div ${html_id}>\n${html_titles}\n${html_contents}\n</div>\n`
 	}
-	
-	
-	
-	/**
-	 * 
-	 */
-	/*render_tab_content(arg_tab_cfg)
-	{
-		assert( T.isObject(arg_tab_cfg), context + ':render_tab_content:bad tab cfg object')
-		
-		// HTML CONTENT
-		if ( T.isString(arg_tab_cfg.content_html) )
-		{
-			return arg_tab_cfg.content_html
-		}
-		
-		// VIEW
-		if ( T.isString(arg_tab_cfg.content_view) )
-		{
-			let view = undefined
-			
-			// GET AN EXISTING CHILD
-			if ( this.has_child(arg_tab_cfg.content_view) )
-			{
-				view = this.get_child(arg_tab_cfg.content_view)
-			}
-			
-			// GET OR CREATE A VIEW
-			else
-			{
-				view = this.get_component(arg_tab_cfg.content_view)
-				this.add_child(view)
-			}
-			
-			if ( ! T.isObject(view) )
-			{
-				return ''
-			}
-			
-			return view.render()
-		}
-		
-		return ''
-	}*/
 }
