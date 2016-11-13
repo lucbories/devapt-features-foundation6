@@ -1,22 +1,16 @@
-
+// NPM IMPORTS
 import T from 'typr'
 import assert from 'assert'
 import path from 'path'
-
 import Devapt from 'devapt'
 
 const RenderingPlugin = Devapt.RenderingPlugin
 
-import Button from './plugin/button'
-import Tree from './plugin/tree'
-// import HBox from './plugin/hbox'
-// import VBox from './plugin/vbox'
-// import List from './plugin/list'
-import Table from './plugin/table'
-import Tabs from './plugin/tabs'
-// import Page from './plugin/page'
-// import Script from './plugin/script'
-import Menubar from './plugin/menubar'
+// PLUGIN IMPORTS
+import button from './rendering_functions/button'
+import table from './rendering_functions/table'
+import menubar from './rendering_functions/menubar'
+import tabs from './rendering_functions/tabs'
 
 
 const plugin_name = 'Foundation-6' 
@@ -53,75 +47,52 @@ export default class Foundation6Plugin extends RenderingPlugin
      */
 	get_feature_class(arg_class_name)
 	{
-		assert( T.isString(arg_class_name), context + ':get_class:bad class string')
+		assert( T.isString(arg_class_name), context + ':get_feature_class:bad class string')
 		
 		return Foundation6Plugin.get_class(arg_class_name)
 	}
-	
-	
-	create(arg_class_name, arg_name, arg_settings, arg_state)
-	{
-		assert( T.isString(arg_class_name), context + ':create:bad class string')
-		
-		switch(arg_class_name)
-		{
-			case 'Button': return new Button(arg_name, arg_settings, arg_state)
-			case 'Tree':   return new Tree(arg_name, arg_settings, arg_state)
-			// case 'HBox':   return new HBox(arg_name, arg_settings, arg_state)
-			// case 'VBox':   return new VBox(arg_name, arg_settings, arg_state)
-			// case 'List':   return new List(arg_name, arg_settings, arg_state)
-			case 'Table':  return new Table(arg_name, arg_settings, arg_state)
-			case 'Tabs':  return new Tabs(arg_name, arg_settings, arg_state)
-			// case 'Page':   return new Page(arg_name, arg_settings, arg_state)
-			// case 'Script': return new Script(arg_name, arg_settings, arg_state)
-			case 'Menubar': return new Menubar(arg_name, arg_settings, arg_state)
-		}
-		
-		assert(false, context + ':create:bad class name')
-		return undefined
-	}
-	
+
+
 	
 	/**
-     * Get a feature class.
-     * @param {string} arg_class_name - feature class name.
-     * @returns {object} feature class.
+	 * Find a rendering function.
+	 * 
+	 * @param {string} arg_type - rendering item type.
+	 * 
+	 * @returns {Function} - rendering function.
 	 */
-	static get_class(arg_class_name)
+	static find_rendering_function(arg_type)
 	{
-		assert( T.isString(arg_class_name), context + ':get_class:bad class string')
-		
-		switch(arg_class_name)
+		// console.log(context + ':find_rendering_function:type=' + arg_type)
+
+		if ( ! T.isString(arg_type) )
 		{
-			case 'Button':   return Button
-			case 'Tree':   return Tree
-			case 'Table':  return Table
-			case 'Tabs':  return Tabs
-			case 'Menubar': return Menubar
+			console.warn(context + ':find_rendering_function:bad type=' + arg_type, T.isString(arg_type), typeof arg_type, arg_type)
+			return undefined
 		}
 		
-		assert(false, context + ':get_class:bad class name')
+		
+		switch(arg_type.toLocaleLowerCase())
+		{
+			// RENDERING FUNCTIONS
+			case 'button':
+				// console.log(button, context + ':find_rendering_function:found type=' + arg_type)
+				return button
+			
+			case 'table':
+				// console.log(table, context + ':find_rendering_function:found type=' + arg_type)
+				return table
+			
+			case 'menubar':
+				// console.log(menubar, context + ':find_rendering_function:found type=' + arg_type)
+				return menubar
+			
+			case 'tabs':
+				// console.log(tabs, context + ':find_rendering_function:found type=' + arg_type)
+				return tabs
+		}
+
+		// console.log(tabs, context + ':find_rendering_function:not found type=' + arg_type.toLocaleLowerCase())
 		return undefined
-	}
-	
-	
-	has(arg_class_name)
-	{
-		switch(arg_class_name)
-		{
-			case 'Button':
-			case 'Tree':
-			// case 'HBox':
-			// case 'VBox':
-			// case 'List':
-			case 'Table':
-			case 'Tabs':
-			// case 'Page':
-			// case 'Script':
-			case 'Menubar':
-				return true
-		}
-		
-		return false
 	}
 }
