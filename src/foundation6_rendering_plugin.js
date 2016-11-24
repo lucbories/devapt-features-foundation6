@@ -7,6 +7,7 @@ import Devapt from 'devapt'
 const RenderingPlugin = Devapt.RenderingPlugin
 
 // PLUGIN IMPORTS
+import hbox from './rendering_functions/hbox'
 import button from './rendering_functions/button'
 import table from './rendering_functions/table'
 import menubar from './rendering_functions/menubar'
@@ -20,9 +21,9 @@ const context = plugin_name + '/foundation6_rendering_plugin'
 
 export default class Foundation6Plugin extends RenderingPlugin
 {
-	constructor(arg_manager)
+	constructor(arg_runtime, arg_manager)
 	{
-		super(arg_manager, plugin_name, '1.0.0')
+		super(arg_runtime, arg_manager, plugin_name, '1.0.0')
 		
 		const base_dir = __dirname + '/../node_modules/foundation-sites/dist'
 		this.add_public_asset('css', '/' + plugin_name + '/foundation.css', path.join(base_dir, 'foundation.css') )
@@ -75,6 +76,10 @@ export default class Foundation6Plugin extends RenderingPlugin
 		switch(arg_type.toLocaleLowerCase())
 		{
 			// RENDERING FUNCTIONS
+			case 'hbox':
+				// console.log(hbox, context + ':find_rendering_function:found type=' + arg_type)
+				return hbox
+
 			case 'button':
 				// console.log(button, context + ':find_rendering_function:found type=' + arg_type)
 				return button

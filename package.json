@@ -29,7 +29,7 @@
     "feature"
   ],
   "dependencies": {
-    "devapt": "^1.0.0",
+    "devapt": "^2.0.0",
     "foundation-sites": "^6.0.0",
     "typr": "^0.2.1",
     "virtual-dom": "^2.1.1"

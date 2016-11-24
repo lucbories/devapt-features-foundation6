@@ -64,13 +64,13 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	const anchor_settings = { children:settings.children }
 	const menu_anchor   = (item)=>anchor(anchor_settings, item, rendering_context, undefined)
 	const menu_a        = (label)=>h('a', {href:'#'}, label)
-	const menu_cmd      = (item)=>h('li', { role:'menuitem' }, [ extract_vnode( menu_anchor(item) ) ] )
-	const menu_no_cmd   = (item)=>h('li', { role:'menuitem' }, [ menu_a( T.isString(item) ? item : item.label ) ] )
+	const menu_cmd      = (item)=>h('li', { attributes:{ role:'menuitem' } }, [ extract_vnode( menu_anchor(item) ) ] )
+	const menu_no_cmd   = (item)=>h('li', { attributes:{ role:'menuitem' } }, [ menu_a( T.isString(item) ? item : item.label ) ] )
 	const submenu       = (item)=>{
 		const a = menu_a(item.label)
 		const m = menus(item.items)
-		const ul = h('ul', { class:'dropdown menu', 'data-dropdown-menu':'' }, m ? [m] : [])
-		const li = h('li', { role:'menuitem' }, [a, ul])
+		const ul = h('ul', { className:'dropdown menu', attributes:{ 'data-dropdown-menu':'' } }, m ? [m] : [])
+		const li = h('li', { attributes:{ role:'menuitem' } }, [a, ul])
 		return li
 	}
 	const menu = (item)=>T.isObject(item) && T.isArray(item.items) && item.items.length > 0 ? submenu(item) : (item.command ?  menu_cmd(item) : menu_no_cmd(item) )
@@ -79,30 +79,30 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	
 	// BUILD LEFT MENUS TAG
 	const left_ul_children = left_items.map(menu_item) //DEBUG .forEach( (value, index)=>console.log('left value at %n:%s', index, value) )
-	const left_ul = h('ul', { class:'dropdown menu', 'data-dropdown-menu':'' }, left_ul_children ? [left_ul_children] : [])
-	const left = h('div', { class:'top-bar-left' }, [left_ul])
+	const left_ul = h('ul', { className:'dropdown menu', attributes:{ 'data-dropdown-menu':'' } }, left_ul_children ? [left_ul_children] : [])
+	const left = h('div', { className:'top-bar-left' }, [left_ul])
 
 	// BUILD RIGHT MENUS TAG
 	const right_ul_children = right_items.map(menu_item)
-	const right_ul = h('ul', { class:'dropdown menu', 'data-dropdown-menu':'' }, right_ul_children ? [right_ul_children] : [])
-	const right = h('div', { class:'top-bar-right' }, [right_ul])
+	const right_ul = h('ul', { className:'dropdown menu', attributes:{ 'data-dropdown-menu':''} }, right_ul_children ? [right_ul_children] : [])
+	const right = h('div', { className:'top-bar-right' }, [right_ul])
 
 	// BUILD TITLE TAG
 	const label = h('strong', undefined, [label_value])
-	const title_ul_li = h('li', { role:'menuitem' }, [label])
-	const title_ul = h('ul', { class:'dropdown menu' }, [title_ul_li])
-	const title = h('div', { class:'top-bar-title' }, [title_ul])
+	const title_ul_li = h('li', { attributes:{ role:'menuitem' } }, [label])
+	const title_ul = h('ul', { className:'dropdown menu' }, [title_ul_li])
+	const title = h('div', { className:'top-bar-title' }, [title_ul])
 
 	// BUILD NAV TAG
-	const top = h('div', { class:'top-bar'}, [title, left, right])
-	const nav_children = [top]
-	const nav_props = { style:settings.style, class:settings.class }
+	// const top = h('div', { className:'top-bar'}, [title, left, right])
+	const nav_children = [title, left, right]
+	const nav_props = { style:settings.style, className:'top-bar' }
 	const nav = h('nav', nav_props, nav_children)
 
 	// BUILD DIV TAG
 	const tag_id = settings.id
 	const tag_children = [nav]
-	const tag_props = { id:tag_id, style:settings.style, class:settings.class }
+	const tag_props = { id:tag_id, style:settings.style, className:settings.class }
 	const tag = h('div', tag_props, tag_children)
 	
 
@@ -123,28 +123,17 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	)
 
 	const js_init = `
-		$(document).ready(
+		window.devapt().on_content_rendered(
 			function(){
 				var menubar = $("#${tag_id}");
-				menubar.show();
-				
-				$('a.devapt-command', menubar).click(
-					function(ev)
-					{
-						var anchor = $(ev.currentTarget);
-						var router = window.devapt().runtime().router()
-						var cmd_name = anchor.data('devapt-command')
-						
-						if (cmd_name)
-						{
-							router.evaluate_command(cmd_name)
-							return
-						}
-					}
-				);
-			}
-		)
-	`
+				if ( ! $('.dropdown .menu', menubar).data('zfPlugin') )
+				{
+					menubar.foundation()
+				}
+			},
+			undefined,
+			true
+		)`
 
 	rendering_result.add_body_scripts_tags(
 		[
