@@ -59,6 +59,9 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	rendering_context.trace_fn(right_items, 'right_items')
 	
 
+	const dropdown_attr = { 'data-dropdown-menu':'', 'data-closing-time':200, 'data-autoclose':true, 'data-close-on-click':true, 'data-close-on-click-inside':true }
+
+
 	// BUILD MENU TAG
 	const extract_vnode = (result)=>result.get_final_vtree(undefined, rendering_result)
 	const anchor_settings = { children:settings.children }
@@ -69,7 +72,7 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	const submenu       = (item)=>{
 		const a = menu_a(item.label)
 		const m = menus(item.items)
-		const ul = h('ul', { className:'dropdown menu', attributes:{ 'data-dropdown-menu':'' } }, m ? [m] : [])
+		const ul = h('ul', { className:'dropdown menu', attributes:dropdown_attr }, m ? [m] : [])
 		const li = h('li', { attributes:{ role:'menuitem' } }, [a, ul])
 		return li
 	}
@@ -79,12 +82,12 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	
 	// BUILD LEFT MENUS TAG
 	const left_ul_children = left_items.map(menu_item) //DEBUG .forEach( (value, index)=>console.log('left value at %n:%s', index, value) )
-	const left_ul = h('ul', { className:'dropdown menu', attributes:{ 'data-dropdown-menu':'' } }, left_ul_children ? [left_ul_children] : [])
+	const left_ul = h('ul', { className:'dropdown menu', attributes:dropdown_attr }, left_ul_children ? [left_ul_children] : [])
 	const left = h('div', { className:'top-bar-left' }, [left_ul])
 
 	// BUILD RIGHT MENUS TAG
 	const right_ul_children = right_items.map(menu_item)
-	const right_ul = h('ul', { className:'dropdown menu', attributes:{ 'data-dropdown-menu':''} }, right_ul_children ? [right_ul_children] : [])
+	const right_ul = h('ul', { className:'dropdown menu', attributes:dropdown_attr }, right_ul_children ? [right_ul_children] : [])
 	const right = h('div', { className:'top-bar-right' }, [right_ul])
 
 	// BUILD TITLE TAG
