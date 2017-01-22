@@ -9,11 +9,19 @@ var changed = require('gulp-changed')
 var livereload = require('gulp-livereload')
 
 
+var source = require('vinyl-source-stream')
+var Buffer = require('vinyl-buffer')
+var browserify = require('browserify')
+
+
 
 var SRC_ALL_JS = 'src/**/*.js'
+// var SRC_INDEX_JS = 'src/index.js'
 
 var DST = 'dist'
 var DST_ALL_JS = DST
+var DST_INDEX = './dist/index.js'
+var DST_BROWSER_BUNDLE = 'devapt-features-foundation6.js'
 
 const BABEL_CONFIG = {
 	presets: ['es2015']
@@ -50,12 +58,12 @@ gulp.task('watch_all_js',
 	() => {
 		gulp.watch(SRC_ALL_JS, ['build_all_js'])
 		.on('change',
-			(path, stats) => {
+			(path/*, stats*/) => {
 				console.log('File ' + path + ' was changed, running watch_all_js...')
 			}
 		)
 		.on('unlink',
-			(path, stats) => {
+			(path/*, stats*/) => {
 				console.log('File ' + path + ' was deleted, running watch_all_js...')
 			}
 		)
@@ -63,16 +71,28 @@ gulp.task('watch_all_js',
 )
 
 
-
-/*
-	LIVE RELOAD SERVER
-*/
+gulp.task('build_browser_bundle',
+	() => {
+		return browserify( { entries: DST_INDEX } )
+			.ignore('devapt')
+			.external('client_runtime')
+			.external('forge-browser')
+			.external('ui')
+			.require('./dist/foundation6_rendering_plugin.js', { expose:'foundation6_plugin' } )
+			.bundle()
+			.pipe( source(DST_BROWSER_BUNDLE) )
+			.pipe( new Buffer() )
+			.pipe(sourcemaps.write('.'))
+			.pipe( gulp.dest(DST) )
+			.pipe( livereload() )
+	}
+)
 
 
 
 /*
 	DEFINE MAIN GULP TASKS
 */
-gulp.task('default', gulp.series('build_all_js') )
+gulp.task('default', gulp.series('build_all_js', 'build_browser_bundle') )
 
-gulp.task('watch', gulp.series('build_all_js', 'watch_all_js') )
+gulp.task('watch', gulp.series('build_all_js', 'build_browser_bundle', 'watch_all_js') )

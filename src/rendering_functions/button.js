@@ -1,18 +1,28 @@
 // NPM IMPORTS
-import T from 'typr'
-import assert from 'assert'
-import _ from 'lodash'
-import h from 'virtual-dom/h'
+import T from 'typr/lib/typr'
+// import assert from 'assert'
+// import _ from 'lodash'
+// import h from 'virtual-dom/h'
 import Devapt from 'devapt'
 
-// COMMON IMPORTS
-const DefaultRenderingPlugin = Devapt.DefaultRenderingPlugin
+// DEVAPT IMPORTS
+const has_window = new Function('try {return this===window;}catch(e){ return false;}')
+let DefaultRenderingPlugin = undefined
+if (has_window())
+{
+	// COMMON IMPORTS
+	const plugin = require('../../node_modules/devapt/dist/common/default_plugins/rendering_default_plugin.js')
+	// console.log('Devapt', plugin)
+	DefaultRenderingPlugin = plugin.default
+} else {
+	DefaultRenderingPlugin = Devapt.DefaultRenderingPlugin
+}
 const rendering_normalize = DefaultRenderingPlugin.find_rendering_function('rendering_normalize')
 const button = DefaultRenderingPlugin.find_rendering_function('button')
 
 
-const plugin_name = 'Foundation-6' 
-const context = plugin_name + '/foundation6_rendering_plugin'
+const plugin_name = 'Foundation6' 
+const context = plugin_name + '/rendering_function/button'
 
 
 
@@ -23,7 +33,6 @@ const default_state = {
 
 // DEFAULT SETTINGS
 const default_settings = {
-	type: 'button',
 	class:undefined,
 	style:undefined,
 	id:undefined,

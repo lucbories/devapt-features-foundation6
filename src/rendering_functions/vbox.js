@@ -21,7 +21,7 @@ const rendering_normalize = DefaultRenderingPlugin.find_rendering_function('rend
 
 
 const plugin_name = 'Foundation6' 
-const context = plugin_name + '/rendering_function/hbox'
+const context = plugin_name + '/rendering_function/vbox'
 
 
 
@@ -35,22 +35,13 @@ const default_state = {
 const default_settings = {
 	class:undefined,
 	style:undefined,
-	id:undefined,
-	sizes:undefined
+	id:undefined
 }
 
 
-
-const get_size_class = (arg_sizes, arg_index)=>{
-	if (arg_sizes && arg_sizes.length > arg_index)
-	{
-		return arg_sizes[arg_index]
-	}
-	return ''
-}
 
 /**
- * HBox rendering with given state, produce a rendering result.
+ * VBox rendering with given state, produce a rendering result.
  * 
  * @param {object} arg_settings - rendering item settings.
  * @param {object} arg_state - component state.
@@ -75,10 +66,9 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	const items_value   = T.isArray(state.items)   ? state.items : undefined
 
 	// BUILD CELL
-	const cell_fn = (cell, index) => {
+	const cell_fn = (cell/*, index*/) => {
 		const content = T.isFunction(rendering_factory) ? rendering_factory(cell, rendering_context, settings.children).get_final_vtree(undefined, rendering_result) : cell.toString()
-		const size_class = get_size_class(settings.sizes, index)
-		const tag_props = { className:size_class + ' columns' }
+		const tag_props = { className:'row' }
 		return h('div', tag_props, [content])
 	}
 

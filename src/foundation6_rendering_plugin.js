@@ -1,20 +1,34 @@
 // NPM IMPORTS
-import T from 'typr'
+import T from 'typr/lib/typr'
 import assert from 'assert'
 import path from 'path'
 import Devapt from 'devapt'
 
-const RenderingPlugin = Devapt.RenderingPlugin
+// DEVAPT IMPORTS
+const has_window = new Function('try {return this===window;}catch(e){ return false;}')
+let RenderingPlugin = undefined
+if (has_window())
+{
+	// COMMON IMPORTS
+	const plugin = require('../node_modules/devapt/dist/common/plugins/rendering_plugin.js')
+	// console.log('Devapt', plugin)
+	RenderingPlugin = plugin.default
+} else {
+	RenderingPlugin = Devapt.RenderingPlugin
+}
 
 // PLUGIN IMPORTS
 import hbox from './rendering_functions/hbox'
+import vbox from './rendering_functions/vbox'
 import button from './rendering_functions/button'
 import table from './rendering_functions/table'
 import menubar from './rendering_functions/menubar'
 import tabs from './rendering_functions/tabs'
+import dropdown from './rendering_functions/dropdown'
+import drilldown from './rendering_functions/drilldown'
 
 
-const plugin_name = 'Foundation-6' 
+const plugin_name = 'Foundation6' 
 const context = plugin_name + '/foundation6_rendering_plugin'
 
 
@@ -38,19 +52,37 @@ export default class Foundation6Plugin extends RenderingPlugin
 		const what_dir = base_dir + '/../node_modules/what-input/'
 		this.add_public_asset('js', '/' + plugin_name + '/what-input.js', path.join(what_dir, 'what-input.js') )
 		this.add_public_asset('js', '/' + plugin_name + '/what-input.min.js', path.join(what_dir, 'what-input.min.js') )
+
+		const dist_dir = __dirname + '/../dist/'
+		this.add_public_asset('js', '/' + plugin_name + '/devapt-features-foundation6.js', path.join(dist_dir, 'devapt-features-foundation6.js') )
 	}
+
+
+
+	/**
+	 * Get plugin js asset files for browser loading.
+	 * 
+	 * @returns {string}
+	 */
+	get_browser_plugin_file_url()
+	{
+		return plugin_name + '/devapt-features-foundation6.js'
+	}
+	
 	
     
 	/**
      * Get a feature class.
+	 * 
      * @param {string} arg_class_name - feature class name.
-     * @returns {object} feature class.
+     * 
+	 * @returns {object|undefined} feature class.
      */
 	get_feature_class(arg_class_name)
 	{
 		assert( T.isString(arg_class_name), context + ':get_feature_class:bad class string')
 		
-		return Foundation6Plugin.get_class(arg_class_name)
+		return undefined
 	}
 
 
@@ -79,6 +111,10 @@ export default class Foundation6Plugin extends RenderingPlugin
 			case 'hbox':
 				// console.log(hbox, context + ':find_rendering_function:found type=' + arg_type)
 				return hbox
+				
+			case 'vbox':
+				// console.log(vbox, context + ':find_rendering_function:found type=' + arg_type)
+				return vbox
 
 			case 'button':
 				// console.log(button, context + ':find_rendering_function:found type=' + arg_type)
@@ -95,6 +131,14 @@ export default class Foundation6Plugin extends RenderingPlugin
 			case 'tabs':
 				// console.log(tabs, context + ':find_rendering_function:found type=' + arg_type)
 				return tabs
+			
+			case 'dropdown':
+				// console.log(dropdown, context + ':find_rendering_function:found type=' + arg_type)
+				return dropdown
+			
+			case 'drilldown':
+				// console.log(drilldown, context + ':find_rendering_function:found type=' + arg_type)
+				return drilldown
 		}
 
 		// console.log(tabs, context + ':find_rendering_function:not found type=' + arg_type.toLocaleLowerCase())

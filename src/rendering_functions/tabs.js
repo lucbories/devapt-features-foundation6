@@ -1,19 +1,27 @@
 // NPM IMPORTS
-import T from 'typr'
-import assert from 'assert'
-import _ from 'lodash'
+import T from 'typr/lib/typr'
+// import assert from 'assert'
+// import _ from 'lodash'
 import h from 'virtual-dom/h'
 import Devapt from 'devapt'
 
-// COMMON IMPORTS
-const DefaultRenderingPlugin = Devapt.DefaultRenderingPlugin
+// DEVAPT IMPORTS
+const has_window = new Function('try {return this===window;}catch(e){ return false;}')
+let DefaultRenderingPlugin = undefined
+if (has_window())
+{
+	// COMMON IMPORTS
+	const plugin = require('../../node_modules/devapt/dist/common/default_plugins/rendering_default_plugin.js')
+	// console.log('Devapt', plugin)
+	DefaultRenderingPlugin = plugin.default
+} else {
+	DefaultRenderingPlugin = Devapt.DefaultRenderingPlugin
+}
 const rendering_normalize = DefaultRenderingPlugin.find_rendering_function('rendering_normalize')
-const RenderingResult = DefaultRenderingPlugin.find_rendering_function('RenderingResult')
-const anchor = DefaultRenderingPlugin.find_rendering_function('anchor')
 
 
-const plugin_name = 'Foundation-6' 
-const context = plugin_name + '/foundation6_rendering_plugin/tabs'
+const plugin_name = 'Foundation6' 
+const context = plugin_name + '/rendering_function/tabs'
 
 
 
@@ -60,7 +68,7 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	}
 
 	// GET STATE ATTRIBUTES
-	const label_value = T.isString(state.label)  ? state.label : undefined
+	// const label_value = T.isString(state.label)  ? state.label : undefined
 	const items_value = T.isArray(state.items)   ? state.items : []
 	const titles_value = items_value.map( (item)=>item.title )
 	const contents_value = items_value.map( (item)=>item.content )
@@ -80,7 +88,7 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 		const r = rendering_factory(title, rendering_context, title && title.children ? title.children : settings.children).get_final_vtree(undefined, rendering_result)
 		return r ? r : 'Tab ' + index
 	}
-	const titles_a = (title, index)=>h('a', { href:'#' + settings.id + '_content_' + index, attributes:{ 'aria-selected':items_tab_is_aria_selected(index) ? 'true' : 'false' } }, titles_create(title, index) )
+	const titles_a = (title, index)=>h('a', { href:'#ignore_' + settings.id + '_content_' + index, attributes:{ 'aria-selected':items_tab_is_aria_selected(index) ? 'true' : 'false' } }, titles_create(title, index) )
 	const titles_li =  (title, index)=>h('li', { className:'tabs-title' + items_tab_is_active(index) }, titles_a(title, index))
 	const titles_id = settings.id + '_titles'
 	const titles_children = titles_value.map(titles_li)
@@ -95,7 +103,7 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 		rendering_context.trace_fn(Object.keys(children), 'tabs:children')
 		return rendering_factory(content, rendering_context, children).get_final_vtree(undefined, rendering_result)
 	}
-	const contents_div = (content, index)=>h('div', { id:settings.id + '_content_' + index, className:'tabs-panel' + items_tab_is_active(index) }, contents_item(content) )
+	const contents_div = (content, index)=>h('div', { id:'ignore_' + settings.id + '_content_' + index, className:'tabs-panel' + items_tab_is_active(index) }, contents_item(content) )
 	const contents_children = contents_value.map(contents_div)
 	const contents_props = { style:undefined, className:'tabs-content' + (state.has_vertical ? ' vertical' : ''), attributes:{ 'data-tabs-content':titles_id } }
 	const contents = h('div', contents_props, contents_children)

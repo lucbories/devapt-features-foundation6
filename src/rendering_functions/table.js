@@ -1,16 +1,26 @@
 // NPM IMPORTS
-import T from 'typr'
+import T from 'typr/lib/typr'
 // import assert from 'assert'
 import Devapt from 'devapt'
 
-// COMMON IMPORTS
-const DefaultRenderingPlugin = Devapt.DefaultRenderingPlugin
+// DEVAPT IMPORTS
+const has_window = new Function('try {return this===window;}catch(e){ return false;}')
+let DefaultRenderingPlugin = undefined
+if (has_window())
+{
+	// COMMON IMPORTS
+	const plugin = require('../../node_modules/devapt/dist/common/default_plugins/rendering_default_plugin.js')
+	// console.log('Devapt', plugin)
+	DefaultRenderingPlugin = plugin.default
+} else {
+	DefaultRenderingPlugin = Devapt.DefaultRenderingPlugin
+}
 const rendering_normalize = DefaultRenderingPlugin.find_rendering_function('rendering_normalize')
 const table = DefaultRenderingPlugin.find_rendering_function('table')
 
 
-const plugin_name = 'Foundation-6' 
-const context = plugin_name + '/foundation6_rendering_plugin/table'
+const plugin_name = 'Foundation6' 
+const context = plugin_name + '/rendering_function/table'
 
 
 
@@ -45,10 +55,19 @@ const default_settings = {
  * @returns {RenderingResult} - updated Rendering result: VNode or Html text, headers.
  */
 export default (arg_settings={}, arg_state={}, arg_rendering_context, arg_rendering_result)=>{
+
+	// DEBUG
+	// console.log(context + ':rendering_function:arg_settings=', arg_settings)
+	// console.log(context + ':rendering_function:arg_state=', arg_state)
+
 	// NORMALIZE ARGS
 	const { settings, state, rendering_context, rendering_result } = rendering_normalize(default_settings, default_state, arg_settings, arg_state, arg_rendering_context, arg_rendering_result, context)
 	// const rendering_factory = rendering_context ? rendering_context.rendering_factory : undefined
 	
+	// DEBUG
+	// console.log(context + ':rendering_function:normalized settings=', settings)
+	// console.log(context + ':rendering_function:arg_state=', arg_state)
+
 	// GET SETTINGS ATTRIBUTES
 	const has_scroll_value = T.isBoolean(settings.has_scroll) ? settings.has_scroll : undefined
 	const has_stack_value  = T.isBoolean(settings.has_stack)  ? settings.has_stack  : undefined
