@@ -18,14 +18,15 @@ if (has_window())
 }
 
 // PLUGIN IMPORTS
-import hbox from './rendering_functions/hbox'
-import vbox from './rendering_functions/vbox'
-import button from './rendering_functions/button'
-import table from './rendering_functions/table'
-import menubar from './rendering_functions/menubar'
-import tabs from './rendering_functions/tabs'
-import dropdown from './rendering_functions/dropdown'
-import drilldown from './rendering_functions/drilldown'
+import hbox_fn from './rendering_functions/hbox'
+import vbox_fn from './rendering_functions/vbox'
+import button_fn from './rendering_functions/button'
+import table_fn from './rendering_functions/table'
+import menubar_fn from './rendering_functions/menubar'
+import tabs_fn from './rendering_functions/tabs'
+import dropdown_fn from './rendering_functions/dropdown'
+import drilldown_fn from './rendering_functions/drilldown'
+import block_grid_fn from './rendering_functions/block_grid'
 
 
 const plugin_name = 'Foundation6' 
@@ -110,35 +111,39 @@ export default class Foundation6Plugin extends RenderingPlugin
 			// RENDERING FUNCTIONS
 			case 'hbox':
 				// console.log(hbox, context + ':find_rendering_function:found type=' + arg_type)
-				return hbox
+				return hbox_fn
 				
 			case 'vbox':
 				// console.log(vbox, context + ':find_rendering_function:found type=' + arg_type)
-				return vbox
+				return vbox_fn
 
 			case 'button':
 				// console.log(button, context + ':find_rendering_function:found type=' + arg_type)
-				return button
+				return button_fn
 			
 			case 'table':
 				// console.log(table, context + ':find_rendering_function:found type=' + arg_type)
-				return table
+				return table_fn
 			
 			case 'menubar':
 				// console.log(menubar, context + ':find_rendering_function:found type=' + arg_type)
-				return menubar
+				return menubar_fn
 			
 			case 'tabs':
 				// console.log(tabs, context + ':find_rendering_function:found type=' + arg_type)
-				return tabs
+				return tabs_fn
 			
 			case 'dropdown':
 				// console.log(dropdown, context + ':find_rendering_function:found type=' + arg_type)
-				return dropdown
+				return dropdown_fn
 			
 			case 'drilldown':
 				// console.log(drilldown, context + ':find_rendering_function:found type=' + arg_type)
-				return drilldown
+				return drilldown_fn
+			
+			case 'block_grid':
+				// console.log(block_grid, context + ':find_rendering_function:found type=' + arg_type)
+				return block_grid_fn
 		}
 
 		// console.log(tabs, context + ':find_rendering_function:not found type=' + arg_type.toLocaleLowerCase())

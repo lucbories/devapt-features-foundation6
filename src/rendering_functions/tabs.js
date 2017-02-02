@@ -62,14 +62,16 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 
 	// GET SETTINGS ATTRIBUTES
 	settings.class = settings.class ? settings.class : ''
-	if ( settings.class.indexOf('row') == -1)
-	{
-		settings.class += ' row'
-	}
+	// if ( settings.class.indexOf('row') == -1)
+	// {
+	// 	settings.class += ' row'
+	// }
 
 	// GET STATE ATTRIBUTES
 	// const label_value = T.isString(state.label)  ? state.label : undefined
 	const items_value = T.isArray(state.items)   ? state.items : []
+	const active_title = T.isString(state.active_tab) ? state.active_tab : undefined
+	let active_index = T.isNumber(state.active_tab) ? state.active_tab : 0
 	const titles_value = items_value.map( (item)=>item.title )
 	const contents_value = items_value.map( (item)=>item.content )
 	if (state.has_vertical)
@@ -82,14 +84,25 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	
 
 	// BUILD TABS TITLES
-	const items_tab_is_active = (index)=>(index == 0) ? ' is-active' : ''
+	const items_tab_is_active = (index, title)=>{
+		if (active_title && title)
+		{
+			if (title == active_title)
+			{
+				active_index = index
+				return ' is-active'
+			}
+			return ''
+		}
+		return index == active_index ? ' is-active' : ''
+	}
 	const items_tab_is_aria_selected = (index)=>(index == 0) ? true : false // TODO
 	const titles_create   = (title, index)=>{
 		const r = rendering_factory(title, rendering_context, title && title.children ? title.children : settings.children).get_final_vtree(undefined, rendering_result)
 		return r ? r : 'Tab ' + index
 	}
 	const titles_a = (title, index)=>h('a', { href:'#ignore_' + settings.id + '_content_' + index, attributes:{ 'aria-selected':items_tab_is_aria_selected(index) ? 'true' : 'false' } }, titles_create(title, index) )
-	const titles_li =  (title, index)=>h('li', { className:'tabs-title' + items_tab_is_active(index) }, titles_a(title, index))
+	const titles_li =  (title, index)=>h('li', { className:'tabs-title' + items_tab_is_active(index, title) }, titles_a(title, index))
 	const titles_id = settings.id + '_titles'
 	const titles_children = titles_value.map(titles_li)
 	const titles_props = { id:titles_id, style:undefined, className:'tabs' + (state.has_vertical ? ' vertical' : ''), attributes:{ 'data-tabs':'' } }
