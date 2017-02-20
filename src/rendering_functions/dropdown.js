@@ -126,6 +126,7 @@ export default (arg_settings={}, arg_state={}, arg_rendering_context, arg_render
 	// COMPONENT TAG
 	const tag_id = settings.id
 	const tag_children = [button_tag, div_tag]
+	settings.class = settings.class ? settings.class + ' devapt-dropdown' : 'devapt-dropdown'
 	const tag_props = { id:tag_id, style:settings.style, className:settings.class }
 	const tag = h('div', tag_props, tag_children )
 	
@@ -157,7 +158,8 @@ export default (arg_settings={}, arg_state={}, arg_rendering_context, arg_render
 	const js_init = `
 		window.devapt().on_content_rendered(
 			function(){
-				var jqo = $("#${tag_id}");
+				// var jqo = $("#${tag_id}");
+				var jqo = $(".devapt-dropdown");
 				if ( ! $('div[data-dropdown]', jqo).data('zfPlugin') )
 				{
 					jqo.foundation()

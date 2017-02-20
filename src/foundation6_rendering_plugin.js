@@ -27,6 +27,7 @@ import tabs_fn from './rendering_functions/tabs'
 import dropdown_fn from './rendering_functions/dropdown'
 import drilldown_fn from './rendering_functions/drilldown'
 import block_grid_fn from './rendering_functions/block_grid'
+import block_grid_dock_fn from './rendering_functions/block_grid_dock'
 
 
 const plugin_name = 'Foundation6' 
@@ -105,45 +106,19 @@ export default class Foundation6Plugin extends RenderingPlugin
 			return undefined
 		}
 		
-		
 		switch(arg_type.toLocaleLowerCase())
 		{
 			// RENDERING FUNCTIONS
-			case 'hbox':
-				// console.log(hbox, context + ':find_rendering_function:found type=' + arg_type)
-				return hbox_fn
-				
-			case 'vbox':
-				// console.log(vbox, context + ':find_rendering_function:found type=' + arg_type)
-				return vbox_fn
-
-			case 'button':
-				// console.log(button, context + ':find_rendering_function:found type=' + arg_type)
-				return button_fn
-			
-			case 'table':
-				// console.log(table, context + ':find_rendering_function:found type=' + arg_type)
-				return table_fn
-			
-			case 'menubar':
-				// console.log(menubar, context + ':find_rendering_function:found type=' + arg_type)
-				return menubar_fn
-			
-			case 'tabs':
-				// console.log(tabs, context + ':find_rendering_function:found type=' + arg_type)
-				return tabs_fn
-			
-			case 'dropdown':
-				// console.log(dropdown, context + ':find_rendering_function:found type=' + arg_type)
-				return dropdown_fn
-			
-			case 'drilldown':
-				// console.log(drilldown, context + ':find_rendering_function:found type=' + arg_type)
-				return drilldown_fn
-			
-			case 'block_grid':
-				// console.log(block_grid, context + ':find_rendering_function:found type=' + arg_type)
-				return block_grid_fn
+			case 'hbox':				return hbox_fn
+			case 'vbox':				return vbox_fn
+			case 'button':				return button_fn
+			case 'table':				return table_fn
+			case 'menubar':				return menubar_fn
+			case 'tabs':				return tabs_fn
+			case 'dropdown':			return dropdown_fn
+			case 'drilldown':			return drilldown_fn
+			case 'block_grid':			return block_grid_fn
+			case 'block_grid_dock':		return block_grid_dock_fn
 		}
 
 		// console.log(tabs, context + ':find_rendering_function:not found type=' + arg_type.toLocaleLowerCase())

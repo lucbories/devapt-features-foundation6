@@ -57,10 +57,10 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 
 	// GET SETTINGS ATTRIBUTES
 	settings.class = settings.class ? settings.class : ''
-	if ( settings.class.indexOf('row') == -1)
-	{
-		settings.class += ' row'
-	}
+	// if ( settings.class.indexOf('row') == -1)
+	// {
+	// 	settings.class += ' row'
+	// }
 
 	// GET STATE ATTRIBUTES
 	const items_value   = T.isArray(state.items)   ? state.items : undefined
@@ -68,8 +68,9 @@ export default (arg_settings, arg_state={}, arg_rendering_context, arg_rendering
 	// BUILD CELL
 	const cell_fn = (cell/*, index*/) => {
 		const content = T.isFunction(rendering_factory) ? rendering_factory(cell, rendering_context, settings.children).get_final_vtree(undefined, rendering_result) : cell.toString()
+		const div = h('div', { className:'small-12 column' }, [content])
 		const tag_props = { className:'row' }
-		return h('div', tag_props, [content])
+		return h('div', tag_props, [div])
 	}
 
 	// BUILD TAG
