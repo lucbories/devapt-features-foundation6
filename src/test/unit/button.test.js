@@ -1,13 +1,13 @@
 // NPM IMPORTS
 import chai from 'chai'
 const expect = chai.expect
-import Devapt from 'devapt'
 
-// COMMON IMPORTS
+// DEVAPT CORE COMMON IMPORTS
+import DefaultRenderingPlugin from 'devapt-core-common/dist/js/default_plugins/rendering_default_plugin'
+
+// PLUGIN IMPORTS
 import Foundation6Plugin from '../../index'
-const DefaultRenderingPlugin = Devapt.DefaultRenderingPlugin
 const factory = DefaultRenderingPlugin.find_rendering_function('rendering_factory')
-const rendering_normalize = DefaultRenderingPlugin.find_rendering_function('rendering_normalize')
 
 
 
@@ -26,7 +26,7 @@ describe('Foundation 6 rendering', () => {
 		trace_fn: ()=>{} //console.log
 	}
 
-	const plugin_name = 'Foundation-6' 
+	const plugin_name = 'Foundation6' 
 
 	const body_scripts_urls = [
 		'plugins/' + plugin_name + '/jquery.min.js',

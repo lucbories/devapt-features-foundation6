@@ -2,7 +2,7 @@ import Foundation6RenderingPlugin from './foundation6_rendering_plugin'
 
 const has_window = new Function('try {return this===window;}catch(e){ return false;}')
 
-const plugin_name = 'Foundation-6'
+const plugin_name = 'Foundation6'
 
 const on_dom_loaded = function(arg_callback)
 { 

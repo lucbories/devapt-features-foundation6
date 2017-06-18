@@ -1,6 +1,6 @@
 {
   "name": "devapt-features-foundation6",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Devapt features for rendering with Foundation Sites 6",
   "author": "Luc BORIES (https://github.com/lucbories)",
   "license": "Apache-2.0",
@@ -15,9 +15,7 @@
   "homepage": "https://github.com/lucbories/devapt-features-foundation6#readme.md",
   "main": "dist/index.js",
   "engines": [],
-  "directories": [
-    "dist"
-  ],
+  "directories": ["dist"],
   "scripts": {
     "test": "mocha --recursive --reporter spec --compilers js:babel-register src/test"
   },
@@ -29,9 +27,8 @@
     "feature"
   ],
   "dependencies": {
-    "devapt": "^2.0.0",
+    "devapt-core-common": "^2.0.0",
     "foundation-sites": "^6.0.0",
-    "typr": "^0.2.1",
     "virtual-dom": "^2.1.1"
   },
   "devDependencies": {

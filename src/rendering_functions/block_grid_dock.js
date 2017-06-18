@@ -1,25 +1,13 @@
+
 // NPM IMPORTS
-import T from 'typr/lib/typr'
-// import assert from 'assert'
-// import _ from 'lodash'
 import h from 'virtual-dom/h'
-import Devapt from 'devapt'
 
-// DEVAPT IMPORTS
-const has_window = new Function('try {return this===window;}catch(e){ return false;}')
-let DefaultRenderingPlugin = undefined
-if (has_window())
-{
-	// COMMON IMPORTS
-	const plugin = require('../../node_modules/devapt/dist/common/default_plugins/rendering_default_plugin.js')
-	// console.log('Devapt', plugin)
-	DefaultRenderingPlugin = plugin.default
-} else {
-	DefaultRenderingPlugin = Devapt.DefaultRenderingPlugin
-}
+// DEVAPT CORE COMMON IMPORTS
+import T                      from 'devapt-core-common/dist/js/utils/types'
+import DefaultRenderingPlugin from 'devapt-core-common/dist/js/default_plugins/rendering_default_plugin'
+
+
 const rendering_normalize = DefaultRenderingPlugin.find_rendering_function('rendering_normalize')
-
-
 const plugin_name = 'Foundation6' 
 const context = plugin_name + '/rendering_function/block_grid_dock'
 

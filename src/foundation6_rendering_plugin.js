@@ -1,21 +1,11 @@
+
 // NPM IMPORTS
-import T from 'typr/lib/typr'
 import assert from 'assert'
 import path from 'path'
-import Devapt from 'devapt'
 
-// DEVAPT IMPORTS
-const has_window = new Function('try {return this===window;}catch(e){ return false;}')
-let RenderingPlugin = undefined
-if (has_window())
-{
-	// COMMON IMPORTS
-	const plugin = require('../node_modules/devapt/dist/common/plugins/rendering_plugin.js')
-	// console.log('Devapt', plugin)
-	RenderingPlugin = plugin.default
-} else {
-	RenderingPlugin = Devapt.RenderingPlugin
-}
+// DEVAPT CORE COMMON IMPORTS
+import T from 'devapt-core-common/dist/js/utils/types'
+import RenderingPlugin from 'devapt-core-common/dist/js/plugins/rendering_plugin'
 
 // PLUGIN IMPORTS
 import hbox_fn from './rendering_functions/hbox'
