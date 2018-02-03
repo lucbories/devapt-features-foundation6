@@ -32,7 +32,7 @@ const default_settings = {
 
 
 /**
- * HBox rendering with given state, produce a rendering result.
+ * Grid rendering with given state, produce a rendering result.
  * 
  * @param {object} arg_settings - rendering item settings.
  * @param {object} arg_state - component state.

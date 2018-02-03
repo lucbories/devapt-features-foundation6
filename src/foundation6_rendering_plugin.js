@@ -18,6 +18,7 @@ import dropdown_fn from './rendering_functions/dropdown'
 import drilldown_fn from './rendering_functions/drilldown'
 import block_grid_fn from './rendering_functions/block_grid'
 import block_grid_dock_fn from './rendering_functions/block_grid_dock'
+import block_grid_dock_item_fn from './rendering_functions/block_grid_dock_item'
 
 
 const plugin_name = 'Foundation6' 
@@ -107,8 +108,15 @@ export default class Foundation6Plugin extends RenderingPlugin
 			case 'tabs':				return tabs_fn
 			case 'dropdown':			return dropdown_fn
 			case 'drilldown':			return drilldown_fn
+
+			case 'block-grid':
 			case 'block_grid':			return block_grid_fn
+
+			case 'block-grid-dock':
 			case 'block_grid_dock':		return block_grid_dock_fn
+
+			case 'block-grid-dock-item':
+			case 'block_grid_dock_item':return block_grid_dock_item_fn
 		}
 
 		// console.log(tabs, context + ':find_rendering_function:not found type=' + arg_type.toLocaleLowerCase())

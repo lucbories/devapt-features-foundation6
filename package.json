@@ -15,7 +15,9 @@
   "homepage": "https://github.com/lucbories/devapt-features-foundation6#readme.md",
   "main": "dist/index.js",
   "engines": [],
-  "directories": ["dist"],
+  "directories": [
+    "dist"
+  ],
   "scripts": {
     "test": "mocha --recursive --reporter spec --compilers js:babel-register src/test"
   },
